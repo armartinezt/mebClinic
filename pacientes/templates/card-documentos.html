@@ -1,0 +1,82 @@
+<div class="card-body">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Presupuestos</h3>
+              </div>
+              <div class="card-body p-0">
+                <table class="tpresupuesto">
+                  <thead>
+                    <tr>
+                      <th style="width: 10px">#</th>
+                      <th>Fecha</th>
+                      <th>Descripción</th>
+                      <th>Estatus</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td>
+
+                      </td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Consentimientos</h3>
+              </div>
+              <div class="card-body p-0">
+                <table class="tconsentimientos">
+                  <thead>
+                    <tr>
+                      <th style="width: 10px">Presupuesto</th>
+                      <th>Fecha</th>
+                      <th>Consentimiento</th>
+                      <th>Estatus</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="row"><h5 style="color:grey;font-weight: bold;">Estudios</h5></div>
+
+
+    <div class="row">
+        <h5 style="color:grey;font-weight: bold;">Observaciones</h5>
+    </div>
+    <div class="form-row">
+        <textarea type="text" id="tPresuObservaciones" name="tObservaciones"
+                      maxlength="128" class="form-control" ></textarea>
+    </div>
+     <div class="row fa-pull-right" style="padding: 5px 5px;">
+        {% ifequal existePre 0 %}
+             <button type="submit" class="btn btn-outline-primary" onclick="guardaDocumentos({{ id }});"> Guardar </button>
+         {% else %}
+             <button type="submit" class="btn btn-outline-primary" onclick="modificaDocumentos({{ id }});"> Modificar </button>
+         {% endifequal %}
+    </div>
+</div>

@@ -1,0 +1,587 @@
+{% extends "genericos/layout.html" %}
+{% block content %}
+    {% load static %}
+    {% csrf_token %}
+  <!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  	<section class="content">
+        <!--<div class="loader"><h2>Cargando...</h2></div>-->
+      <div class="container-fluid">
+      	<div class="card ">
+           <div class="card-header">
+           	<div class="row" >
+                <div class="col-md-6">
+                    <img src="{% static '/dist/images/personal.svg' %}" class="tamImagen "/>
+           			<h5 class="card-title" style="font-size: 30px;">Personal</h5>
+                </div>
+                <div class="col-md-6 text-right">
+                    <div class="card-tools">
+                    <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#tomarFotoModal">
+                            Tomar Foto
+                        </button>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-outline-primary" data-toggle="dropdown">
+                      <i class="fas fa-wrench" style="color: #1682BB;"></i>
+                    </button>
+                    {% include 'panel_paciente.html' %}
+                  </div>
+                </div>
+            </div>
+            </div>
+      			<div class="card-body">
+                    {% csrf_token %}
+                    <div class="row">
+                       <div class="col-md-3 col-sm-6 col-xs-12">
+                           <div style="overflow-y:auto;height: 600px;" id="listaPersonal">
+
+                              <!-- La carga de los info-box en addListaPersonal() -->
+
+                          <!-- /.info-box -->
+                           </div>
+                        </div>
+                        <div class="col-md-9 col-sm-6">
+                            <div class="card-body bg-light">
+                                <div class="form-row">
+                            <div class="col-md-3 mb-3">
+                                <label for="id_personal_nombre">Nombre</label><input type="text" value=""
+                                    style="text-transform: uppercase;" id="id_personal_nombre" name="id_personal_nombre" autofocus
+                                    maxlength="20" class="form-control"  />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="id_personal_apelidos">Apellidos</label><input type="text" value=""
+                                    style="text-transform: uppercase;" id="id_personal_apelidos" name="id_personal_apelidos"
+                                    maxlength="30" class="form-control" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+
+                                <label for="id_personal_correo">Correo:</label>
+                                <input type="email" id="id_personal_correo" value=""
+                                    name="id_personal_correo" maxlength="100" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-3 mb-3">
+                                        <label for="id_personal_fecha_nacimiento">Fecha de Nacimiento</label>
+                                        <input type="date" class="form-control" value=""
+                                               name="id_personal_fecha_nacimiento" placeholder="" id="id_personal_fecha_nacimiento" onfocusout="calculaEdad();" />
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="id_personal_sexo">Sexo</label>
+                                        <select id="id_personal_sexo"  name="id_personal_sexo" class="form-control" data-title="Select Sexo" data-style="btn-default btn-block" data-menu-style="dropdown-blue">
+                                           <option value="Femenino">Femenino</option>
+                                            <option value="Masculino">Masculino</option>
+                                            <option value="No Definido">No Definido</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="id_personal_especialidad">Especialidad</label>
+
+                                         <div class="input-group">
+                                            <select id="id_personal_especialidad" class="form-control">
+                                                <option></option>
+                                            </select>
+                                            <button class="btn btn-outline-primary " for="id_personal_ocupacion" onclick="especialidades()"><i class="fas fa-question"></i></button>
+                                         </div>
+                                    </div>
+                                    <div class="col-md-2 mb-3">
+                                        <label for="id_personal_cp">CP</label>
+                                        <input id="id_personal_cp"  clasS="form-control" value="" name="id_personal_cp" onfocusout="busca_cp(this,'id_personal_estado','i_mun','id_personal_ciudad','id_personal_colonia','id_personal_calle');" type="number" />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-4 mb-4">
+
+                                        <label for="id_personal_calle">Calle y Número</label> <input value=""
+                                            class="form-control" type="text" name="id_personal_calle" maxlength="30" id="id_personal_calle" />
+                                    </div>
+                                    <div class="col-md-4 mb-4">
+                                        <label for="id_personal_colonia">Colonia</label>
+                                        <select id="id_personal_colonia" name="id_personal_colonia" class="form-control"></select>
+
+                                    </div>
+                                    <div class="col-md-4 mb-4">
+                                        <label for="id_personal_telefono">Teléfono:</label><input type="text" id="id_personal_telefono" value=""
+                                            name="id_personal_telefono" maxlength="20" class="form-control" />
+                                    </div>
+
+
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="id_personal_celular">Celular:</label><input type="text" id="id_personal_celular" value=""
+                                            name="id_personal_celular" maxlength="20" class="form-control" />
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="id_personal_ciudad">Ciudad :</label><input type="text" id="id_personal_ciudad"
+                                          value="Guadalajara"  name="id_personal_ciudad" maxlength="20" class="form-control" />
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="id_personal_estado">Estado</label> <input class="form-control"
+                                            value="Jalisco" type="text" name="id_personal_estado" maxlength="30" id="id_personal_estado" />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-md-3 mb-3">
+                                        <label for="id_personal_pais">País</label> <input class="form-control"
+                                            value="México"  type="text" maxlength="30" name="id_personal_pais" id="id_personal_pais" />
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="id_personal_estatus">Estatus</label>
+                                        <select id="id_personal_estatus" class="form-control">
+                                            <option value="A">Activo</option>
+                                            <option value="S">Suspendido</option>
+                                            <option value="C">Cancelado</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="icb_crearUsuario">Crear Usuario</label>
+                                        <input type="checkbox" id="icb_crearUsuario" onclick="ponCreaUsario()">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="input-field col-md-12">
+                                        <label for="id_personal_observaciones">Observaciones:</label>
+                                        <textarea id="id_personal_observaciones"  name="id_personal_observaciones" rows="6" class="form-control ">
+                                            </textarea>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             	<div class="card-footer text-right">
+                    <button class="btn btn-outline-secondary mr-5" onclick="addListaPersonal();"><i class="fas fa-list"></i> Cargar Lista</button>
+                    <button class="btn btn-outline-primary mr-5" onclick="limpiaForm();"><i class="fas fa-broom"></i> Limpia Formulario</button>
+                    <button id="guardarPersonal" class="btn btn-outline-info bg-cyan"><i class="fas fa-user-tie"></i> Agregar</button>
+                </div>
+           </div>
+        </div>
+      </div>
+    </section>
+    <div id="mensaje"></div>
+ </div>
+    <script>
+        function ponCreaUsario()
+        {
+
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            let ge= document.getElementById('guardarPersonal');
+                ge.className='btn btn-outline-info bg-cyan';
+                ge.innerHTML = '<i class="fas fa-user-tie mr-2"></i>'+' Guardar';
+                ge.onclick=function (){
+                    guardaPersonal("N");
+                }
+          getEspecialidades();
+          addListaPersonal();
+        });
+        function  especialidades(){
+            $('#formEspecialidad').modal({keyboard: false})
+            $('#formEspecialidad').modal();
+        }
+        function guardaPersonal(tipo){
+            //alert(tipo);
+            var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+            const nombre = document.getElementById('id_personal_nombre');
+            const apellidos = document.getElementById('id_personal_apelidos');
+            const correo = document.getElementById('id_personal_correo');
+            const fechaNat  = document.getElementById('id_personal_fecha_nacimiento');
+            const selsexo = document.getElementById('id_personal_sexo');
+            const sexo = selsexo.options[selsexo.selectedIndex].value;
+            const selespecialidad = document.getElementById('id_personal_especialidad');
+            const especialidad=selespecialidad.options[selespecialidad.selectedIndex].value;
+            const cp = document.getElementById('id_personal_cp');
+            const callenum = document.getElementById('id_personal_calle');
+            const colonia = document.getElementById('id_personal_colonia');
+            const telefono = document.getElementById('id_personal_telefono');
+            const celular = document.getElementById('id_personal_celular');
+            const ciudad = document.getElementById('id_personal_ciudad');
+            const estado = document.getElementById('id_personal_estado');
+            const pais = document.getElementById('id_personal_pais');
+            const observaciones = document.getElementById('id_personal_observaciones');
+            const seleestatus  = document.getElementById('id_personal_estatus');
+            const estatus = seleestatus.options[seleestatus.selectedIndex].value;
+
+            if (nombre.value==''){
+                mensaje('El campo nombre está vacío');
+                nombre.focus();
+                return
+            } else if (apellidos.value==''){
+                mensaje('El campo apellidos está vacío');
+                apellidos.focus();
+                return
+            } else if (correo.value==''){
+                mensaje('El campo correo está vacío');
+                correo.focus();
+                return
+            } else {
+               // alert(fechaNat.value);
+                datos = {
+                    tipo: tipo,
+                    nombre : nombre.value,
+                    apellidos : apellidos.value,
+                    correo : correo.value,
+                    fechaNat  : fechaNat.value,
+                    sexo : sexo,
+                    especialidad : especialidad, 
+                    cp : cp.value,
+                    callenum : callenum.value,
+                    colonia : colonia.value,
+                    telefono : telefono.value,
+                    celular : celular.value,
+                    ciudad : ciudad.value,
+                    estado : estado.value,
+                    pais : pais.value,
+                    observaciones: observaciones.value,
+                    estatus : estatus,
+                }
+                //alert(especialidad);
+                fetch('/ax_guardaPersonal',
+                {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
+                        'X-CSRFToken': csrftoken,
+                    },
+                    body: JSON.stringify(datos) //JavaScript object of data to POST
+                })
+                .then((response) => response.json())
+                .then((response) => {
+                    //alert( response.mensaje);
+                    if (response.respuesta.mensaje.includes('Error'))
+                    {
+                        toastr.error(response.respuesta.mensaje);
+                    }
+                    else {
+                        toastr.success(response.respuesta.mensaje);
+                    }
+                    //mensaje(response.respuesta.mensaje);
+                    addListaPersonal();
+                    limpiaForm();
+                })
+            }
+        }
+        function limpiaForm(){
+            let ge= document.getElementById('guardarPersonal');
+                ge.className='btn btn-outline-info bg-cyan';
+                ge.innerHTML = '<i class="fas fa-user-tie mr-2"></i>'+' Guardar';
+                ge.onclick=function (){
+                    guardaPersonal("N");
+                }
+
+          document.getElementById('id_personal_nombre').value="";
+          document.getElementById('id_personal_apelidos').value="";
+          document.getElementById('id_personal_correo').value="";
+          document.getElementById('id_personal_fecha_nacimiento').value="";
+          document.getElementById('id_personal_cp').value="";
+          document.getElementById('id_personal_calle').value="";
+          document.getElementById('id_personal_colonia').value="";
+          document.getElementById('id_personal_telefono').value="";
+          document.getElementById('id_personal_celular').value="";
+          document.getElementById('id_personal_ciudad').value="";
+          document.getElementById('id_personal_estado').value="";
+          document.getElementById('id_personal_pais').value="";
+          document.getElementById('id_personal_observaciones').value="";
+          document.getElementById('id_personal_estatus').value="A";
+          document.getElementById('id_personal_nombre').focus();
+        }
+        function dameDetallePersonal(id){
+            //alert(id.indexOf('_'));
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            let g_id=id.substr(id.indexOf('_')+1,4);
+                fetch('/ax_dameDetallePersonal',
+            {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
+                    'X-CSRFToken': csrftoken,
+                },
+                body: JSON.stringify({'id': g_id}) //JavaScript object of data to POST
+            })
+            .then((response) => response.json())
+            .then((responseData) => {
+                const campo = responseData.respuesta.detallePersonal[0];
+                document.getElementById('id_personal_nombre').value = campo.nombre;
+                document.getElementById('id_personal_apelidos').value = campo.apellidos;
+                document.getElementById('id_personal_correo').value = campo.correo;
+                document.getElementById('id_personal_sexo').value = campo.sexo;
+                const d = new Date(campo.fechaNat);
+                document.getElementById('id_personal_fecha_nacimiento').value = d.toISOString().split('T')[0];
+                document.getElementById('id_personal_especialidad').value = campo.especialidad;
+                document.getElementById('id_personal_cp').value = campo.cp;
+                document.getElementById('id_personal_calle').value = campo.calle;
+
+                let select = document.getElementById('id_personal_colonia');
+                let op = document.createElement('option');
+                op.value  = campo.colonia;
+                op.innerText = campo.colonia;
+                select.appendChild(op);
+                document.getElementById('id_personal_telefono').value = campo.telefono;
+                document.getElementById('id_personal_celular').value = campo.celular;
+                document.getElementById('id_personal_ciudad').value = campo.ciudad;
+                document.getElementById('id_personal_estado').value = campo.estado;
+                document.getElementById('id_personal_pais').value = campo.pais;
+                document.getElementById('id_personal_observaciones').value = campo.observaciones;
+                document.getElementById('id_personal_estatus').value = campo.estatus;
+
+                let ge= document.getElementById('guardarPersonal');
+                ge.className='btn btn-outline-info bg-gray';
+                ge.innerHTML = '<i class="fas fa-user-tie mr-2"></i>'+' Editar';
+                ge.onclick=function (){
+                    guardaPersonal("E");
+                }
+
+            })
+            .catch(error => console.warn(error));
+
+        }
+        function addListaPersonal(){
+            var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+                fetch('/ax_getListaPersonal', {
+                  headers:{
+                      'Accept': 'application/json',
+                      'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
+                      'X-CSRFToken': csrftoken,
+                  },
+              })
+              .then(response => {
+                  return response.json() //Convert response to JSON
+              })
+              .then(data => {
+                  removerItems();
+                  for (var i = 0; i < data.respuesta.listaPersonal.length; i++) {
+                      let nombre = data.respuesta.listaPersonal[i].nombre;
+                      let apellidos = data.respuesta.listaPersonal[i].apellidos;
+                      //const  nombreCompleto = nombre+" "+apellidos;
+                      let iniciales = nombre.toString().substring(0,1)+apellidos.toString().substring(0,1);
+                      let especialidad = data.respuesta.listaPersonal[i].especialidad;
+
+                      let div = document.createElement('div');
+                      div.id = 'divInfoBox_'+data.respuesta.listaPersonal[i].id;
+                      div.onclick = function(){
+                        //alert('hola '+div.id);
+                        dameDetallePersonal(div.id);
+                        return false;
+                      };
+                      div.className = 'info-box';
+                      div.innerHTML = '<span class="info-box-icon bg-cyan">'+iniciales+'</span>' +
+                          '<div class="info-box-content">' +
+                          '<span class="info-box-text">'+nombre+'</span>' +
+                          '<span class="info-box-text">'+apellidos+'</span>' +
+                          '<span class="info-box-number">'+especialidad+'</span>' +
+                          '</div>';
+                      let lista = document.getElementById('listaPersonal');
+                      lista.appendChild(div);
+                  }
+
+              })
+        }
+        function clickPersonal(quien){
+            alert(quien);
+        }
+        function removerItems()
+        {
+            let lista = document.getElementById('listaPersonal');
+                  //alert(lista.childElementCount);
+          if (lista.childElementCount > 0) {
+              while(true){
+                    lista.removeChild(lista.childNodes.item(i));
+                   if (lista.childElementCount==0){
+                       break;
+                   }
+              }
+            }
+        }
+        function fguardaEspeci(esp) {
+            var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+            return fetch('/ax_guardaespecialidad',
+                {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
+                        'X-CSRFToken': csrftoken,
+                    },
+                    body: JSON.stringify({'esp': esp}) //JavaScript object of data to POST
+                })
+                .then((response) => response.json())
+                .then((responseData) => {
+                    getEspecialidades();
+                    return responseData;
+                })
+                .catch(error => console.warn(error));
+        }
+        function limpiaSelect(sele){
+          var select = document.getElementById(sele),
+              length = select.options.length;
+          while(length--){
+            select.remove(length);
+          }
+        }
+        function getEspecialidades() {
+            //alert('trae especialidades');
+            var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+                fetch('/ax_getespecialidad', {
+                  headers:{
+                      'Accept': 'application/json',
+                      'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
+                      'X-CSRFToken': csrftoken,
+                  },
+              })
+              .then(response => {
+                  return response.json() //Convert response to JSON
+              })
+              .then(data => {
+                  limpiaSelect("id_personal_especialidad");
+                  if (data!='') {
+                      for (var i = 0; i < data.respuesta.esp.length; i++) {
+                        var select = document.getElementById("id_personal_especialidad");
+                        var option = document.createElement("option");
+                        select.value = 1;
+                        option.text = data.respuesta.esp[i].especialidad;
+                        option.value = data.respuesta.esp[i].id;
+                        select.add(option);
+}
+                    }
+                  //alert(data.respuesta.esp[1].especialidad);
+                  //Perform actions with the response data from the view
+              })
+        }
+        function insertarEspecialidad(){
+            let values;
+             getEspecialidades().then(response=>{
+                  alert(response);
+                  values=response['data'];
+            });
+            //alert(values);
+            //limpiar div
+            const parent = document.getElementById("divSelect")
+            while (parent.firstChild) {
+                parent.firstChild.remove()
+            }
+            var select = document.createElement("select");
+            select.name = "sEspecialidades";
+            select.id = "sEspecialidades";
+            select.className = 'form-control'
+            if (values!='') {
+                for (const val of values) {
+                    var option = document.createElement("option");
+                    option.value = val;
+                    option.text = val.charAt(0).toUpperCase() + val.slice(1);
+                    select.appendChild(option);
+                }
+            }
+            //alert("llegué");
+            var label = document.createElement("label");
+            label.innerHTML = "Selecciona Especialidad: "
+            label.htmlFor = "Especialidades";
+            document.getElementById("divSelect").appendChild(label).appendChild(select);
+        }
+        function guardaEspecialidad(){
+            //alert('Hola');
+            let esp = document.getElementById('txt_descrip_especialidad');
+            if (esp.value == ''){
+                toastr.warning('Falta especialidad...');
+            }else{
+                //alert(esp.value);
+                fguardaEspeci(esp.value).then(respuesta=>{
+                    let mensaje = respuesta['respuesta'];
+                    if (mensaje.indexOf('Error')!=-1)
+                    {toastr.error(mensaje)}
+                    else{toastr.success(mensaje);}
+                });
+            }
+        }
+    </script>
+
+<div class="modal fade" id="formEspecialidad" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="width: 500px;">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: #006cfa;height: 40px;padding: 3px 3px;color: aliceblue;">
+        <h5 class="modal-title" id="exampleModalLongTitle">Especialidades</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row" style="padding: 10px 50px;">
+            <div class="row">
+              <label for="id_especialidad">Id</label>
+              <input type="number" id="id_especialidad" readonly="readonly" maxlength="3" class="form-control"/>
+            </div>  
+            <div class="row ">
+              <label for="txt_descrip_especialidad">Especialidad</label>
+              <input type="text" id="txt_descrip_especialidad" maxlength="40" class="form-control"/>
+                
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-outline-primary" onclick="guardaEspecialidad()" >Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="tomarFotoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLongTitle">Foto</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="row" >
+
+            <div class="col4">
+                <video width=240 height=180
+                    style="outline: #9e9e9e solid 1px; padding-bottom: 3px;"
+                    id="monitor" controls autoplay></video>
+                <p>
+                    <button type="submit" class="btn btn-secondary" id="snap">
+                        <span class="fa fa-play"></span>
+                    </button>
+                    &nbsp;
+                    <button class="btn btn-secondary" id="stopCamara">
+                        <span class="fa fa-stop"></span>
+                    </button>
+                    <button class="btn btn-secondary" id="dispara1">
+                        <span class="fa fa-camera"></span>1
+                    </button>
+                    <button class="btn btn-secondary" id="dispara2">
+                        <span class="fa fa-camera"></span>2
+                    </button>
+                    <button class="btn btn-secondary" id="dispara3">
+                        <span class="fa fa-camera"></span>3
+                    </button>
+                </p>
+            </div>
+            <div class="col2">
+                <canvas width=240 height=180 id="foto1"></canvas>
+                <p>Foto1</p>
+            </div>
+            <div class="col2">
+                <canvas width=240 height=180 id="foto2"></canvas>
+            </div>
+            <div class="col2">
+                <canvas width=240 height=180 id="foto3"></canvas>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-outline-primary">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

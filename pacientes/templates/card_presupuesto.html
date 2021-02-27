@@ -1,0 +1,66 @@
+
+<div class="card-body">
+    <div class="row">
+        <h5 style="color:grey;font-weight: bold;">Presupuesto</h5>
+    </div>
+    <div class="row">
+        {% include 'card_odontograma.html' %}
+    </div>
+    <hr>
+    <label for="sArticulos">Tratamientos:</label><br>
+    <div class="row col-4 mb-3 input-group">
+        <select class="form-control" id="sArticulos" style="background-color: dodgerblue;color: #f9f9f9;font-size: 20px;">
+            {% for art in articulos %}
+               <option  value="{{art.id}}">
+                   {{art.descripcion}}
+               </option>
+            {% endfor %}
+        </select>
+        <button class="btn btn-outline-primary ml-2" id="tbnInsertarT" onclick="agregatratamiento()"><i class="fas fa-plus mr-2"></i>Agregar</button>
+    </div>
+    <div class="row">
+        <table class="table table-responsive-md" id="tpresupuesto">
+            <thead>
+                <th width="3%">Id</th>
+                <th width="30%">Tratamiento</th>
+                <th width="10%">Precio</th>
+                <th width="15%">% Descuento</th>
+                <th width="17%">Descuento</th>
+                <th width="10%">Total</th>
+                <th width="15%">Eliminar</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row mt-0" style="padding: 3px;margin-top: 2px;">
+        <div class="col-md-2" style="font-size: 20px;color: #006cfa;">
+            Suma:<br> <label id="lblPrecio">$ 0</label>
+        </div>
+        <div class="col-md-2" style="font-size: 20px;color: #006cfa;">
+            Descuento:<br> <label id="lblDescuento">$ 0</label>
+        </div>
+        <div class="col-md-2" style="font-size: 20px;color: #006cfa;">
+            Total:<br> <label id="lblTotal">$ 0</label>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <h5 style="color:grey;font-weight: bold;">Observaciones</h5>
+    </div>
+    <div class="form-row">
+        <textarea type="text" id="tPresuObservaciones" name="tObservaciones"
+                      maxlength="128" class="form-control" ></textarea>
+    </div>
+     <div class="row fa-pull-right" style="padding: 5px 5px;">
+         <button type="submit" class="btn btn-outline-primary" onclick="guardaPresupuesto({{ id }});"> Guardar </button>
+    </div>
+</div>

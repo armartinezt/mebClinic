@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render, HttpResponse
 from pacientes.models import Paciente
+from personal.models import Doctores
 from citas.models import Cita
 from django.core import serializers
 from pacientes.functpacientes import buscaPaciente
@@ -10,7 +11,12 @@ import json
 
 # Create your views here.
 def index(request):
-    return render(request, "citas/cita.html")
+    doctores = Doctores.objects.all()
+
+    context = {
+        'tmedicos': doctores,
+    }
+    return render(request, "citas/cita.html",context)
 
 
 # http://www.lalicode.com/post/5/
@@ -24,6 +30,7 @@ def guardacitas(request):
 
         pacid = buscaPaciente(json_data['nombre'],json_data['apellidos'],json_data["correo"])
         cita =Cita.objects.filter(id_paciente=pacid, fecha=json_data["fecha"]).count()
+        doc = Doctores.objects.get(id=int(json_data['medico']))
         if cita>0:
             resp = "Ya existe una cita igual..."
         else:
@@ -35,6 +42,7 @@ def guardacitas(request):
                 paciente.estatus = "IP"  # paciente con información parcial cuando se atienda en la cita se hace el compelemento
                 paciente.telefono = json_data['telefono']
                 paciente.observaciones = json_data["motivo"]
+                paciente.doctor=doc
                 paciente.save()
 
             pacid = buscaPaciente(json_data['nombre'],json_data['apellidos'],json_data["correo"])

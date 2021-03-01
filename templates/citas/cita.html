@@ -112,6 +112,16 @@
 			                  </div>
 	                		</div>
 	                	</div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="id_medico">Médico</label>
+                                <select class="form-control" id="id_medico" name="id_medico">
+                                    {% for tm in tmedicos %}
+                                        <option value="{{ tm.id }}" >{{ tm.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
 
              	</div>
              	<div class="card-footer">

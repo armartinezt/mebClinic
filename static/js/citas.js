@@ -129,7 +129,7 @@ function guardaCita(){
 
 		var celular = $("#iCelularCitas").val();
 		var motivo = $("#iMotivoCitas").val();
-
+		var medico = document.getElementById('id_medico').value
 		var datosUsuario = {
 				nombre : nombre,
 				apellidos: apellidos,
@@ -138,7 +138,8 @@ function guardaCita(){
 				fecha : fecha_cita,
 				hora : hora,
 				celular: celular,
-				motivo : motivo
+				motivo : motivo,
+				medico : medico
 
 				};
 		var csrftoken = $("[name=csrfmiddlewaretoken]").val();

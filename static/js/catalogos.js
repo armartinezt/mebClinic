@@ -171,7 +171,7 @@ function tipoCatalogo(cual){
 }
 
 function guardaCatalogos(que,tipo,id){
-    alert(que + " "+tipo);
+    //alert(que + " "+tipo);
     let dTipo = $(tipoCatalogo(tipo)).val();
     id = $('#'+id).val();
     if (que=='G'){id=-1;}

@@ -98,7 +98,7 @@ function calculaPorcentaje(){
 
 
 function guardaPacientesValida(){
-        alert("hola");
+       // alert("hola");
       datosPaciente= {
             "nombre": $('#id_nombre').val().toUpperCase(),
             "apellidos": $('#id_apelidos').val().toUpperCase(),
@@ -128,6 +128,7 @@ function guardaPacientesValida(){
         toastr.error('Falta fecha nacimiento ');return }
 }
 function guardaPacientes(){
+		//alert(document.getElementById('id_medico').value);
         datosPaciente= {
            "nombre": $('#id_nombre').val().toUpperCase(),
             "apellidos": $('#id_apelidos').val().toUpperCase(),
@@ -144,7 +145,8 @@ function guardaPacientes(){
             "comentario": document.getElementById('id_observaciones').value,
             "ciudad": $('#id_ciudad').val(),
             "estado": $('#id_estado').val(),
-            "pais": $('#id_pais').val()
+            "pais": $('#id_pais').val(),
+			"medico":document.getElementById('id_medico').value,
         }
 
     if (datosPaciente.nombre===''){

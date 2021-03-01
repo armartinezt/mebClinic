@@ -108,11 +108,17 @@
                         </div>
                         <div class="col-md-3 mb-3">
                             <label for="id_pais">País</label> <input class="form-control"
-                                value="Méxco" type="text" maxlength="30" name="id_pais" id="id_pais" />
+                                value="México" type="text" maxlength="30" name="id_pais" id="id_pais" />
                         </div>
                         <div class="col-md-3 mb-3">
-                            <label for="id_medico">Médico</label> <input class="form-control"
-                                value="Méxco" type="text" maxlength="30" name="id_medico" id="id_medico" />
+                            <label for="id_medico">Médico</label>
+                            <select class="form-control" id="id_medico" name="id_medico">
+                                {% for tm in tmedicos %}
+                                    <option value="{{ tm.id }}" >{{ tm.nombre }}</option>
+                                {% endfor %}
+                            </select>
+
+                      
                         </div>
                     </div>
                     <div class="form-row">

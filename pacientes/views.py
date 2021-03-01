@@ -211,11 +211,13 @@ def ajax_buscapacientes(request):
 @login_required(login_url='/loginform')
 def pacientes(request, id):
     paciente = Paciente.objects.filter(id=id)
+    doctores = Doctores.objects.all()
     existePac = 0
     if (paciente):
         existePac = 1
     context = {
         'existePac': existePac,
+        'tmedicos':doctores,
     }
     return render(request, 'paciente.html', context)
 
@@ -234,7 +236,7 @@ def ajax_guardapaciente(request):
             resp = "Ya existe un paciente con ese nombre y correo"
         else:
             # print('nombre' + str(nombre))
-
+            doc = Doctores.objects.get(id=int(json_data['medico']))
             paciente.nombre = str.upper(nombre)
             paciente.apellidos = str.upper(apellidos)
             paciente.correo = correo
@@ -252,6 +254,7 @@ def ajax_guardapaciente(request):
             paciente.celular = json_data['celular']
             paciente.observaciones = json_data['comentario']
             paciente.sexo = json_data['sexo']
+            paciente.doctor=doc
 
             paciente.save()
             resp = "Registro Guardado..."
